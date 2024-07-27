@@ -1,0 +1,79 @@
+# This Python 3 environment comes with many helpful analytics libraries installed
+# It is defined by the kaggle/python Docker image: https://github.com/kaggle/docker-python
+# For example, here's several helpful packages to load
+
+import numpy as np # linear algebra
+import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+
+# Input data files are available in the read-only "../input/" directory
+# For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory
+
+import os
+for dirname, _, filenames in os.walk('/kaggle/input'):
+    for filename in filenames:
+        print(os.path.join(dirname, filename))
+
+# You can write up to 20GB to the current directory (/kaggle/working/) that gets preserved as output when you create a version using "Save & Run All" 
+# You can also write temporary files to /kaggle/temp/, but they won't be saved outside of the current session
+# import libraries
+import pandas as pd 
+import numpy as np
+# Data Read
+data=pd.read_csv("/kaggle/input/predict-term-deposit/Assignment-2_Data.csv")
+data.head()
+data.describe()
+data.head()
+data.tail()
+data.info()
+data.isnull().sum()
+data.columns
+from sklearn.preprocessing import LabelEncoder
+encoder = LabelEncoder()
+data['job'] = encoder.fit_transform(data['job'])
+job = {index : label for index, label in enumerate(encoder.classes_)}
+job
+data['marital'] = encoder.fit_transform(data['marital'])
+marital = {index : label for index, label in enumerate(encoder.classes_)}
+marital
+data['education'] = encoder.fit_transform(data['education'])
+education = {index : label for index, label in enumerate(encoder.classes_)}
+education
+data['default'] = encoder.fit_transform(data['default'])
+default = {index : label for index, label in enumerate(encoder.classes_)}
+default
+data['loan'] = encoder.fit_transform(data['loan'])
+loan = {index : label for index, label in enumerate(encoder.classes_)}
+loan
+data['contact'] = encoder.fit_transform(data['contact'])
+contact = {index : label for index, label in enumerate(encoder.classes_)}
+contact
+data['month'] = encoder.fit_transform(data['month'])
+month = {index : label for index, label in enumerate(encoder.classes_)}
+month
+data['poutcome'] = encoder.fit_transform(data['poutcome'])
+poutcome = {index : label for index, label in enumerate(encoder.classes_)}
+poutcome
+data['housing'] = encoder.fit_transform(data['housing'])
+housing = {index : label for index, label in enumerate(encoder.classes_)}
+housing
+x = data.drop('y', axis=1)
+y = data['y']
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler(copy=True, feature_range=(0, 1))
+X = scaler.fit_transform(x)
+
+#showing data
+print('x \n' , X[:10])
+print('y \n' , y[:10])
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=33,random_state=0)
+print("x_train shape is",x_train.shape)
+print("y_train shape is",y_train.shape)
+print("x_test shape is ",x_test.shape)
+print("y_test shape is",y_test.shape)
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import f1_score
+from sklearn.metrics import precision_score
+PrecisionScore = precision_score(y_test, y_pred, average='micro') #it can be : binary,macro,weighted,samples
+print('Precision Score is : ', PrecisionScore)
